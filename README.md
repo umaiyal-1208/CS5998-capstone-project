@@ -44,6 +44,12 @@ $env:AMEX_DATA_DIR = "C:\capstone-data"    # Windows (PowerShell)
 export AMEX_DATA_DIR=~/capstone-data       # macOS / Linux
 ```
 
+To download, put a Kaggle API token (Kaggle → Settings → API → Create New Token) at `~/.kaggle/kaggle.json`, accept the [competition rules](https://www.kaggle.com/competitions/amex-default-prediction/rules), then run:
+
+```bash
+python scripts/download_data.py
+```
+
 ## Results
 
 Not yet available. Populated as experiments are run.
