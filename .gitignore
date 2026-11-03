@@ -1,0 +1,28 @@
+# Datasets: downloaded by script, never committed (competition rules forbid redistribution)
+data/
+*.parquet
+*.feather
+*.csv.zip
+
+# Kaggle API token
+kaggle.json
+
+# Model checkpoints and run outputs
+checkpoints/
+runs/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
