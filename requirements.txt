@@ -1,0 +1,6 @@
+# Added to as the project needs them. Developed on Python 3.10.2.
+numpy==2.2.6
+pandas==2.3.3
+pyarrow==25.0.1
+kaggle==1.7.4.5
+tqdm==4.67.1
