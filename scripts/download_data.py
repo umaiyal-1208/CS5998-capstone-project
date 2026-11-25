@@ -60,8 +60,15 @@ def kaggle_api():
 
 
 def unzip_if_needed(target: Path) -> None:
-    """Kaggle sometimes serves a single file as <name>.zip. Extract it in place."""
+    """Extract a file Kaggle served zipped.
+
+    Kaggle sometimes saves a single file as <name>.zip, and sometimes as a zip
+    archive under the file's own name (train.parquet arrived as a 1.45 GB zip
+    named train.parquet). Both cases are detected from the content, not the name.
+    """
     zipped = target.with_name(target.name + ".zip")
+    if target.exists() and zipfile.is_zipfile(target):
+        target.rename(zipped)
     if zipped.exists():
         print(f"  extracting {zipped.name}")
         with zipfile.ZipFile(zipped) as zf:
@@ -77,7 +84,17 @@ def download_parquet(api) -> None:
 
 def download_labels(api) -> None:
     print(f"\n[train_labels.csv] from competition {COMPETITION}")
-    api.competition_download_file(COMPETITION, TRAIN_LABELS.name, path=str(RAW), quiet=False)
+    try:
+        api.competition_download_file(COMPETITION, TRAIN_LABELS.name, path=str(RAW), quiet=False)
+    except Exception as exc:
+        # Kaggle answers 403 when the account has not accepted the competition rules.
+        if "403" in str(exc):
+            sys.exit(
+                "Kaggle refused the label download (403 Forbidden). Accept the rules at "
+                f"https://www.kaggle.com/competitions/{COMPETITION}/rules with the same "
+                "account as kaggle.json, then rerun this script."
+            )
+        raise
     unzip_if_needed(TRAIN_LABELS)
 
 
